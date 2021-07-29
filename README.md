@@ -1,12 +1,15 @@
 # buildkite-auth [![Build status](https://badge.buildkite.com/1d777cdb62388e04d43d2e1c2dd821674c8ff4c0f2f6668334.svg?branch=main)](https://buildkite.com/jayco/buildkite-auth)
+
 Simple client to authenticate against the Buildkite API (V2)
+
 # Installation
 
 To get the package:
 
 ```shell
-go get github.com/jayco/buildkite-auth/v2  
+go get github.com/jayco/buildkite-auth/v2
 ```
+
 # API
 
 ## Data Structures
@@ -22,6 +25,7 @@ type TokenResponse struct {
 ```
 
 ## Methods
+
 ### NewClient(apiToken string, debug bool) *Client
 
 Returns a new Auth Client.
@@ -48,15 +52,15 @@ Returns details about the API Access Token that was used to authenticate the req
 
 ```go
     resp, err := c.TokenScopes()
-    log.Println(resp)    
+    log.Println(resp)
 ```
 
 ```shell
-➜  go run main.go                                   
+➜  go run main.go
 2021/07/29 18:25:52 &{12346789-o98u-hy65-okj7-9876yt54re32 [read_agents write_agents read_teams read_artifacts write_artifacts read_builds write_builds read_job_env read_build_logs write_build_logs read_organizations read_pipelines write_pipelines read_user graphql] }
 ```
 
-### RevokeToken() (*http.Response, error)
+### RevokeToken() (*TokenResponse, error)
 
 Maps to [DELETE https://buildkite.com/docs/rest-api/access-token](https://buildkite.com/docs/rest-api/access-token)
 
@@ -64,7 +68,7 @@ Revokes the API Access Token that was used to authenticate the request. Once rev
 
 ```go
     resp, err := c.TokenScopes()
-    log.Println(resp)    
+    log.Println(resp)
 ```
 
 ```shell

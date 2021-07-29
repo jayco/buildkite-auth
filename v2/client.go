@@ -9,8 +9,11 @@ import (
 )
 
 const (
+	// tokenPath of the URL
 	tokenPath = "/access-token"
-	v2Api     = "https://api.buildkite.com/v2"
+
+	// v2Api URL
+	v2Api = "https://api.buildkite.com/v2"
 )
 
 // TokenResponse from API
