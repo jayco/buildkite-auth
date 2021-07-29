@@ -47,12 +47,19 @@ func (c *Client) TokenScopes() (*TokenResponse, error) {
 }
 
 // RevokeToken of the client https://buildkite.com/docs/rest-api/access-token
-func (c *Client) RevokeToken() (*http.Response, error) {
+func (c *Client) RevokeToken() (*TokenResponse, error) {
 	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("%s%s", c.Host, tokenPath), nil)
 	if err != nil {
 		return nil, err
 	}
-	return c.Do(req)
+
+	resp, err := c.Do(req)
+	statusText, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return &TokenResponse{Message: string(statusText)}, nil
 }
 
 // AuthRoundTripper to override default roundtripper https://github.com/golang/go/blob/master/src/net/http/client.go#L62

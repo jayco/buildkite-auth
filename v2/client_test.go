@@ -3,7 +3,6 @@ package client
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
@@ -118,7 +117,7 @@ func TestClient_RevokeToken(t *testing.T) {
 	tests := []struct {
 		name    string
 		Client  *Client
-		want    string
+		want    *TokenResponse
 		wantErr bool
 	}{
 		{
@@ -132,21 +131,20 @@ func TestClient_RevokeToken(t *testing.T) {
 				},
 				ts.URL,
 			},
-			http.StatusText(http.StatusNoContent),
+			&TokenResponse{Message: http.StatusText(http.StatusNoContent)},
 			false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got, err := tt.Client.RevokeToken()
-			statusText, _ := ioutil.ReadAll(got.Body)
 
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Client.RevokeToken() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 
-			if !reflect.DeepEqual(string(statusText), tt.want) {
+			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Client.RevokeToken() = %v, want %v", got, tt.want)
 			}
 		})
