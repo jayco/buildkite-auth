@@ -54,12 +54,11 @@ func (c *Client) RevokeToken() (*TokenResponse, error) {
 	}
 
 	resp, err := c.Do(req)
-	statusText, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
 
-	return &TokenResponse{Message: string(statusText)}, nil
+	return &TokenResponse{Message: resp.Status}, nil
 }
 
 // AuthRoundTripper to override default roundtripper https://github.com/golang/go/blob/master/src/net/http/client.go#L62

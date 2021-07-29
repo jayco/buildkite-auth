@@ -2,7 +2,6 @@ package client
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
@@ -41,8 +40,7 @@ func apiMock() (*httptest.Server, *expected) {
 
 				// Delete https://buildkite.com/docs/rest-api/access-token
 				if r.Method == http.MethodDelete {
-					w.Header().Set("Content-Type", "text/html")
-					fmt.Fprintf(w, http.StatusText(http.StatusNoContent))
+					w.WriteHeader(http.StatusNoContent)
 				}
 			}
 		} else {
@@ -131,7 +129,7 @@ func TestClient_RevokeToken(t *testing.T) {
 				},
 				ts.URL,
 			},
-			&TokenResponse{Message: http.StatusText(http.StatusNoContent)},
+			&TokenResponse{Message: "204 No Content"},
 			false,
 		},
 	}
