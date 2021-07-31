@@ -1,4 +1,4 @@
-# buildkite-auth [![Build status](https://badge.buildkite.com/1d777cdb62388e04d43d2e1c2dd821674c8ff4c0f2f6668334.svg?branch=main)](https://buildkite.com/jayco/buildkite-auth)
+# buildkite-auth [![Build status](https://badge.buildkite.com/1d777cdb62388e04d43d2e1c2dd821674c8ff4c0f2f6668334.svg?branch=main)](https://buildkite.com/jayco/buildkite-auth)[![Go Reference](https://pkg.go.dev/badge/github.com/jayco/buildkite-auth/v2.svg)](https://pkg.go.dev/github.com/jayco/buildkite-auth/v2)
 
 Simple client to authenticate against the Buildkite API (V2)
 
