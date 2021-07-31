@@ -1,11 +1,13 @@
 package client
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"net/http/httputil"
+
+	"golang.org/x/oauth2"
 )
 
 const (
@@ -64,28 +66,9 @@ func (c *Client) RevokeToken() (*TokenResponse, error) {
 	return &TokenResponse{Message: resp.Status}, nil
 }
 
-// AuthRoundTripper to override default roundtripper https://github.com/golang/go/blob/master/src/net/http/client.go#L62
-type authRoundTripper struct {
-	Token     string
-	Dump      bool
-	Transport http.RoundTripper
-}
-
-// RoundTrip overrides the default RoundTrip https://github.com/golang/go/blob/master/src/net/http/client.go#L142
-func (a authRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", a.Token))
-
-	if a.Dump {
-		if dump, err := httputil.DumpRequest(req, true); err == nil {
-			fmt.Printf("REQUEST_DUMP:\n%s\n%s\n", req.URL, dump)
-		}
-	}
-
-	return a.Transport.RoundTrip(req)
-}
-
 // NewClient with our roundtripper
-func NewClient(apiToken string, debug bool) *Client {
-	c := http.Client{Transport: &authRoundTripper{Token: apiToken, Dump: debug, Transport: http.DefaultTransport}}
-	return &Client{Client: &c, Host: v2Api}
+func NewClient(ctx context.Context, apiToken string) *Client {
+	at := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: apiToken})
+	c := oauth2.NewClient(ctx, at)
+	return &Client{Client: c, Host: v2Api}
 }

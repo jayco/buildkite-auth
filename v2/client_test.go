@@ -1,11 +1,14 @@
 package client
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
 	"testing"
+
+	"golang.org/x/oauth2"
 )
 
 type expected struct {
@@ -66,29 +69,13 @@ func TestClient_TokenScopes(t *testing.T) {
 	}{
 		{
 			"Should return scopes with valid token",
-			&Client{
-				&http.Client{
-					Transport: &authRoundTripper{
-						Token:     "token",
-						Transport: http.DefaultTransport,
-					},
-				},
-				ts.URL,
-			},
+			&Client{oauth2.NewClient(context.Background(), oauth2.StaticTokenSource(&oauth2.Token{AccessToken: "token"})), ts.URL},
 			&expResp.ValidToken,
 			false,
 		},
 		{
 			"Should error scopes with invalid token",
-			&Client{
-				&http.Client{
-					Transport: &authRoundTripper{
-						Token:     "invalid-token",
-						Transport: http.DefaultTransport,
-					},
-				},
-				ts.URL,
-			},
+			&Client{oauth2.NewClient(context.Background(), oauth2.StaticTokenSource(&oauth2.Token{AccessToken: "invalid-token"})), ts.URL},
 			&expResp.InvalidToken,
 			false,
 		},
@@ -120,15 +107,7 @@ func TestClient_RevokeToken(t *testing.T) {
 	}{
 		{
 			"Should return success when token is revoked",
-			&Client{
-				&http.Client{
-					Transport: &authRoundTripper{
-						Token:     "token",
-						Transport: http.DefaultTransport,
-					},
-				},
-				ts.URL,
-			},
+			&Client{oauth2.NewClient(context.Background(), oauth2.StaticTokenSource(&oauth2.Token{AccessToken: "token"})), ts.URL},
 			&TokenResponse{Message: "204 No Content"},
 			false,
 		},
@@ -159,20 +138,12 @@ func TestNewClient(t *testing.T) {
 		{
 			"Should return a new client with correct input",
 			token,
-			&Client{
-				Client: &http.Client{
-					Transport: &authRoundTripper{
-						Token:     token,
-						Transport: http.DefaultTransport,
-					},
-				},
-				Host: v2Api,
-			},
+			&Client{oauth2.NewClient(context.Background(), oauth2.StaticTokenSource(&oauth2.Token{AccessToken: "token"})), v2Api},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewClient(tt.token, false); !reflect.DeepEqual(got, tt.want) {
+			if got := NewClient(context.Background(), tt.token); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("NewClient() = %v, want %v", got, tt.want)
 			}
 		})

@@ -26,7 +26,7 @@ type TokenResponse struct {
 
 ## Methods
 
-### NewClient(apiToken string, debug bool) *Client
+### NewClient(ctx context.Context, apiToken string) *Client
 
 Returns a new Auth Client.
 
@@ -39,7 +39,7 @@ import (
 )
 
 func main() {
-	c := client.NewClient("your-api-token", false)
+	c := client.NewClient(context.Background(), "your-api-token")
 }
 ```
 
