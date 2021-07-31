@@ -1,4 +1,4 @@
-module github.com/jayco/buildkite-auth
+module github.com/jayco/buildkite-auth/v2
 
 go 1.16
 

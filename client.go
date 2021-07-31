@@ -1,4 +1,4 @@
-package client
+package auth
 
 import (
 	"context"
@@ -29,6 +29,11 @@ type TokenResponse struct {
 type Client struct {
 	*http.Client
 	Host string
+}
+
+// GetHost URL
+func (c *Client) GetHost() string {
+	return c.Host
 }
 
 // TokenScopes of the client https://buildkite.com/docs/rest-api/access-token

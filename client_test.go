@@ -1,4 +1,4 @@
-package client
+package auth
 
 import (
 	"context"
@@ -145,6 +145,27 @@ func TestNewClient(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := NewClient(context.Background(), tt.token); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("NewClient() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestClient_GetHost(t *testing.T) {
+	tests := []struct {
+		name   string
+		client *Client
+		want   string
+	}{
+		{
+			"Should return the host URL",
+			NewClient(context.Background(), "token"),
+			v2Api,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.client.GetHost(); got != tt.want {
+				t.Errorf("Client.GetHost() = %v, want %v", got, tt.want)
 			}
 		})
 	}
