@@ -43,6 +43,20 @@ func main() {
 }
 ```
 
+### GetHost() string
+
+Return the host URL of the client.
+
+```go
+    host := c.GetHost()
+    log.Println(host)
+```
+
+```shell
+➜  go run main.go
+2021/07/31 22:30:52 https://api.buildkite.com/v2
+```
+
 ### TokenScopes() (*TokenResponse, error)
 
 Maps to [GET https://buildkite.com/docs/rest-api/access-token](https://buildkite.com/docs/rest-api/access-token)
