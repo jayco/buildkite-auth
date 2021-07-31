@@ -66,7 +66,7 @@ func (c *Client) RevokeToken() (*TokenResponse, error) {
 	return &TokenResponse{Message: resp.Status}, nil
 }
 
-// NewClient with our roundtripper
+// NewClient with bearer token
 func NewClient(ctx context.Context, apiToken string) *Client {
 	at := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: apiToken})
 	c := oauth2.NewClient(ctx, at)
