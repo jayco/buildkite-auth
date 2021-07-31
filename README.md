@@ -67,7 +67,7 @@ Maps to [DELETE https://buildkite.com/docs/rest-api/access-token](https://buildk
 Revokes the API Access Token that was used to authenticate the request. Once revoked, the token can no longer be used for further requests.
 
 ```go
-    resp, err := c.TokenScopes()
+    resp, err := c.RevokeToken()
     log.Println(resp)
 ```
 
